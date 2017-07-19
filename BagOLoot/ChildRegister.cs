@@ -7,7 +7,7 @@ namespace BagOLoot
 {
     public class ChildRegister
     {
-        private List<string> _children = new List<string>();
+        // private List<string> _children = new List<string>();
         private string _connectionString = $"Data Source={Environment.GetEnvironmentVariable("BAGOLOOT_DB")}";
         private SqliteConnection _connection;
 
@@ -48,18 +48,13 @@ namespace BagOLoot
             return _lastId != 0;
         }
 
-        public List<string> GetChildren ()
-        {
-            return new List<string>();
-        }
+        // public string GetChild (string name)
+        // {
+        //     var child = _children.SingleOrDefault(c => c == name);
 
-        public string GetChild (string name)
-        {
-            var child = _children.SingleOrDefault(c => c == name);
+        //     // Inevitably, two children will have the same name. Then what?
 
-            // Inevitably, two children will have the same name. Then what?
-
-            return child;
-        }
+        //     return child;
+        // }
     }
 }

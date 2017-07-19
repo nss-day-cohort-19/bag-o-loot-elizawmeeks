@@ -7,10 +7,12 @@ namespace BagOLoot.Tests
     public class ChildRegisterShould
     {
         private readonly ChildRegister _register;
+        private ListHelper _list;
 
         public ChildRegisterShould()
         {
             _register = new ChildRegister();
+            _list = new ListHelper();
         }
 
         [Theory]
@@ -26,8 +28,10 @@ namespace BagOLoot.Tests
         [Fact]
         public void ReturnListOfChildren()
         {
-            var result = _register.GetChildren();
+            var result = _list.GetChildren();
             Assert.IsType<List<string>>(result);
         }
+
+        
     }
 }
