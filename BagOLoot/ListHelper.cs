@@ -8,7 +8,7 @@ namespace BagOLoot
     public class ListHelper
     {
         
-        private List<string> _children = new List<string>();
+        private Dictionary<int, string> _children = new Dictionary<int, string>();
         private string _connectionString = $"Data Source={Environment.GetEnvironmentVariable("BAGOLOOT_DB")}";
         private SqliteConnection _connection;
 
@@ -17,9 +17,9 @@ namespace BagOLoot
             _connection = new SqliteConnection(_connectionString);
         }
         
-        public List<string> GetChildren ()
+        public Dictionary<int, string> GetChildren ()
         {
-            // return new List<string>();
+            // return new Dictionary<int, string>();
             using (_connection)
             {
                 _connection.Open();
@@ -33,7 +33,9 @@ namespace BagOLoot
                     // read each row in the resultset
                     while (dr.Read())
                     {
-                        _children.Add(dr[1].ToString()); //add child name to list
+                        int result;
+                        Int32.TryParse(dr[0].ToString(), out result);
+                        _children.Add(result, dr[1].ToString()); //add child name to list
                     }
                 }
 
@@ -44,9 +46,62 @@ namespace BagOLoot
             return _children;
         }
 
-        public List<string> GetOneToyList()
+        public List<string> GetChildsToys(int childId)
         {
-            return new List<string>();
+            // Returns list of toy names for this child
+            List<string> ToyList = new List<string>();
+            using (_connection)
+            {
+                _connection.Open();
+                SqliteCommand dbcmd = _connection.CreateCommand();
+
+                // Select the id and name of every child
+                dbcmd.CommandText = $"select name from toy";
+
+                using (SqliteDataReader dr = dbcmd.ExecuteReader())
+                {
+                    // read each row in the resultset
+                    while (dr.Read())
+                    {
+                        ToyList.Add(dr.ToString()); //add toyId to list
+                    }
+                }
+
+                // clean up
+                dbcmd.Dispose();
+                _connection.Close();
+            }
+            return ToyList;
+        }
+
+        public List<int> GetChildsToyIds(int childId)
+        {
+            // Returns list of toy Ids for this child
+            List<int> ToyIdList = new List<int>();
+            using (_connection)
+            {
+                _connection.Open();
+                SqliteCommand dbcmd = _connection.CreateCommand();
+
+                // Select the id and name of every child
+                dbcmd.CommandText = $"select id from toy";
+
+                using (SqliteDataReader dr = dbcmd.ExecuteReader())
+                {
+                    // read each row in the resultset
+                    while (dr.Read())
+                    {
+                        int result;
+                        Int32.TryParse(dr.ToString(), out result);
+                        ToyIdList.Add(result); //add toyId to list
+                    }
+                }
+
+                // clean up
+                dbcmd.Dispose();
+                _connection.Close();
+            }
+            return ToyIdList;
         }
 
         // public string GetChild (string name)

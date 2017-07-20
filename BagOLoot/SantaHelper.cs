@@ -1,12 +1,50 @@
+using System;
 using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
+// using System.Collections.Generic;
+
 namespace BagOLoot
 {
     public class SantaHelper
     {
-        public int AddToyToBag(string toy, int child)
+
+        private string _connectionString = $"Data Source={Environment.GetEnvironmentVariable("BAGOLOOT_DB")}";
+        private SqliteConnection _connection;
+        public SantaHelper()
+        {
+            _connection = new SqliteConnection(_connectionString);
+        }
+        public int AddToyToBag(string toy, int childId)
         {
             // Returns the new toy ID
-            return 4;
+            int _lastId = 0; // Will store the id of the last inserted record
+            using (_connection)
+            {
+                _connection.Open ();
+                SqliteCommand dbcmd = _connection.CreateCommand ();
+
+                // Insert the new child
+                dbcmd.CommandText = $"insert into toy values (null, '{toy}', {childId})";
+                Console.WriteLine(dbcmd.CommandText);
+                dbcmd.ExecuteNonQuery ();
+
+                // Get the id of the new row
+                dbcmd.CommandText = $"select last_insert_rowid()";
+                using (SqliteDataReader dr = dbcmd.ExecuteReader()) 
+                {
+                    if (dr.Read()) {
+                        _lastId = dr.GetInt32(0);
+                    } else {
+                        throw new Exception("Unable to insert value");
+                    }
+                }
+
+                // clean up
+                dbcmd.Dispose ();
+                _connection.Close ();
+            }
+
+            return _lastId;
         }
 
         public int RemoveToyFromBag(int toy)
@@ -14,9 +52,5 @@ namespace BagOLoot
             return 3;
         }
 
-        public List<int> GetChildsToys(int child)
-        {
-            return new List<int>(){4, 6, 7, 8};
-        }
     }
 }

@@ -9,12 +9,14 @@ namespace BagOLoot
         public static void Main(string[] args)
         {
             var db = new DatabaseInterface();
-            db.Check();
+            db.CheckChild();
+            db.CheckToy();
 
             Console.WriteLine ("WELCOME TO THE BAG O' LOOT SYSTEM");
             Console.WriteLine ("*********************************");
             Console.WriteLine ("1. Add a child");
             Console.WriteLine("2. Assign toy to a child");
+            Console.WriteLine("3. Revoke toy from child");
 			Console.Write ("> ");
 
 			// Read in the user's choice
@@ -34,14 +36,24 @@ namespace BagOLoot
             {
                 Console.WriteLine("Assign toy to which child?");
                 ListHelper listMaster = new ListHelper();
-                List<string> childrenList = listMaster.GetChildren();
+                Dictionary<int, string> childrenList = listMaster.GetChildren();
                 int c = 0;
-                foreach (string thing in childrenList)
+                // KeyValuePair<int, string> number in numberTable
+                foreach (KeyValuePair<int, string> thing in childrenList)
                 {
                     c++;
-                    Console.WriteLine($"{c}. {thing}");
+                    Console.WriteLine($"{c}. {thing.Value}");
                 }
                 Console.Write ("> ");
+                // Read in the user's choice
+                int assignedChild;
+                Int32.TryParse (Console.ReadLine(), out assignedChild);
+                Console.WriteLine($"Enter toy to add to this {childrenList[assignedChild]}'s Bag o' Loot");
+                Console.Write ("> ");
+                string newToy = Console.ReadLine();
+                SantaHelper Helper = new SantaHelper();
+                Helper.AddToyToBag(newToy, assignedChild);
+                Console.WriteLine($"{newToy} has been assigned to {childrenList[assignedChild]}!");
             }
         }
     }
