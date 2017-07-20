@@ -17,6 +17,7 @@ namespace BagOLoot
             Console.WriteLine ("1. Add a child");
             Console.WriteLine("2. Assign toy to a child");
             Console.WriteLine("3. Revoke toy from child");
+            Console.WriteLine("4. Review child's toy list");
 			Console.Write ("> ");
 
 			// Read in the user's choice
@@ -49,6 +50,14 @@ namespace BagOLoot
                 // Read in the user's choice
                 int assignedChild;
                 Int32.TryParse (Console.ReadLine(), out assignedChild);
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    c++;
+                    if (c == assignedChild)
+                    {
+                        assignedChild = thing.Key;
+                    }
+                }
                 Console.WriteLine($"Enter toy to add to this {childrenList[assignedChild]}'s Bag o' Loot");
                 Console.Write ("> ");
                 string newToy = Console.ReadLine();
@@ -72,6 +81,14 @@ namespace BagOLoot
                 // Read in the user's choice
                 int assignedChild;
                 Int32.TryParse (Console.ReadLine(), out assignedChild);
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    c++;
+                    if (c == assignedChild)
+                    {
+                        assignedChild = thing.Key;
+                    }
+                }
                 Console.WriteLine($"Choose toy to revoke from {childrenList[assignedChild]}'s Bag o' Loot");
                 List<string> childsToys = listMaster.GetChildsToys(assignedChild);
                 int d = 0;
@@ -94,6 +111,35 @@ namespace BagOLoot
                         revokedToyId = thing;
                         Helper.RemoveToyFromBag(revokedToyId, assignedChild);
                     }
+                }
+            }
+            if (choice == 4)
+            {
+                Console.WriteLine ("View Bag o' Loot for which child?");
+                Dictionary<int, string> childrenList = listMaster.GetChildren();
+                int c = 0;
+                // KeyValuePair<int, string> number in numberTable
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    c++;
+                    Console.WriteLine($"{c}. {thing.Value}");
+                }
+                Console.Write ("> ");
+                int assignedChild;
+                Int32.TryParse (Console.ReadLine(), out assignedChild);
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    c++;
+                    if (c == assignedChild)
+                    {
+                        assignedChild = thing.Key;
+                    }
+                }
+                List<string> childsToys = listMaster.GetChildsToys(assignedChild);
+                int e = 0;
+                foreach (string thing in childsToys){
+                    e++;
+                    Console.WriteLine($"{e}. {thing}");
                 }
             }
         }
