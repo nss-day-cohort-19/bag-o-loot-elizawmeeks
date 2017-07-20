@@ -47,10 +47,24 @@ namespace BagOLoot
             return _lastId;
         }
 
-        public int RemoveToyFromBag(int toy)
+        public int RemoveToyFromBag(int toyId, int childId)
         {
-            return 3;
-        }
+            // returns childId
+            using (_connection)
+            {
+                _connection.Open ();
+                SqliteCommand dbcmd = _connection.CreateCommand ();
 
+                // Insert the new child
+                dbcmd.CommandText = $"delete from toy where id = {toyId}";
+                Console.WriteLine(dbcmd.CommandText);
+                dbcmd.ExecuteNonQuery ();
+
+                // clean up
+                dbcmd.Dispose ();
+                _connection.Close ();
+            }
+            return childId;
+        }
     }
 }

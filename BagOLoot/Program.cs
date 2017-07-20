@@ -24,6 +24,7 @@ namespace BagOLoot
 			Int32.TryParse (Console.ReadLine(), out choice);
 
             ListHelper listMaster = new ListHelper();
+            SantaHelper Helper = new SantaHelper();
             if (choice == 1)
             {
                 Console.WriteLine ("Enter child name");
@@ -51,7 +52,7 @@ namespace BagOLoot
                 Console.WriteLine($"Enter toy to add to this {childrenList[assignedChild]}'s Bag o' Loot");
                 Console.Write ("> ");
                 string newToy = Console.ReadLine();
-                SantaHelper Helper = new SantaHelper();
+                
                 Helper.AddToyToBag(newToy, assignedChild);
                 Console.WriteLine($"{newToy} has been assigned to {childrenList[assignedChild]}!");
             }
@@ -80,8 +81,20 @@ namespace BagOLoot
                     Console.WriteLine($"{d}. {thing}");
                 }
                 Console.Write ("> ");
-                int revokedToy;
-                Int32.TryParse (Console.ReadLine(), out revokedToy);
+                int revokedIndex;
+                int revokedToyId;
+                Int32.TryParse (Console.ReadLine(), out revokedIndex);
+                List<int> toyIdList = listMaster.GetChildsToyIds(assignedChild);
+                d = 0;
+                foreach (int thing in toyIdList)
+                {
+                    d++;
+                    if (d == revokedIndex)
+                    {
+                        revokedToyId = thing;
+                        Helper.RemoveToyFromBag(revokedToyId, assignedChild);
+                    }
+                }
             }
         }
     }
