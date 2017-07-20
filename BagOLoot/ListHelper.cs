@@ -56,14 +56,14 @@ namespace BagOLoot
                 SqliteCommand dbcmd = _connection.CreateCommand();
 
                 // Select the id and name of every child
-                dbcmd.CommandText = $"select name from toy";
+                dbcmd.CommandText = $"select name from toy where childId = {childId}";
 
                 using (SqliteDataReader dr = dbcmd.ExecuteReader())
                 {
                     // read each row in the resultset
                     while (dr.Read())
                     {
-                        ToyList.Add(dr.ToString()); //add toyId to list
+                        ToyList.Add(dr[0].ToString()); //add toyId to list
                     }
                 }
 

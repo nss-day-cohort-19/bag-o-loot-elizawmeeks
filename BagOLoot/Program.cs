@@ -23,6 +23,7 @@ namespace BagOLoot
 			int choice;
 			Int32.TryParse (Console.ReadLine(), out choice);
 
+            ListHelper listMaster = new ListHelper();
             if (choice == 1)
             {
                 Console.WriteLine ("Enter child name");
@@ -35,7 +36,6 @@ namespace BagOLoot
             if (choice == 2)
             {
                 Console.WriteLine("Assign toy to which child?");
-                ListHelper listMaster = new ListHelper();
                 Dictionary<int, string> childrenList = listMaster.GetChildren();
                 int c = 0;
                 // KeyValuePair<int, string> number in numberTable
@@ -54,6 +54,34 @@ namespace BagOLoot
                 SantaHelper Helper = new SantaHelper();
                 Helper.AddToyToBag(newToy, assignedChild);
                 Console.WriteLine($"{newToy} has been assigned to {childrenList[assignedChild]}!");
+            }
+            if (choice == 3)
+            {
+                Console.WriteLine("Remove toy from which child?");
+                Console.WriteLine(">");
+                Dictionary<int, string> childrenList = listMaster.GetChildren();
+                int c = 0;
+                // KeyValuePair<int, string> number in numberTable
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    c++;
+                    Console.WriteLine($"{c}. {thing.Value}");
+                }
+                Console.Write ("> ");
+                // Read in the user's choice
+                int assignedChild;
+                Int32.TryParse (Console.ReadLine(), out assignedChild);
+                Console.WriteLine($"Choose toy to revoke from {childrenList[assignedChild]}'s Bag o' Loot");
+                List<string> childsToys = listMaster.GetChildsToys(assignedChild);
+                int d = 0;
+                foreach (string thing in childsToys)
+                {
+                    d++;
+                    Console.WriteLine($"{d}. {thing}");
+                }
+                Console.Write ("> ");
+                int revokedToy;
+                Int32.TryParse (Console.ReadLine(), out revokedToy);
             }
         }
     }
