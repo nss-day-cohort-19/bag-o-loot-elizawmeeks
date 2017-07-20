@@ -16,13 +16,22 @@ namespace BagOLoot.Tests
         {
             var childrenList = _listHelper.GetChildren();
 
-            Assert.IsType<List<string>>(childrenList);
+            Assert.IsType<Dictionary<int, string>>(childrenList);
         }
         [Fact]
-        public void GetOneChildsToyList()
+        public void GetOneChildsListOfToyIds()
         {
-            List<string> childToyList = _listHelper.GetOneToyList();
+            int childId = 4;
+            List<int> childToyList = _listHelper.GetChildsToyIds(childId);
 
+            Assert.IsType<List<int>>(childToyList);
+        }
+
+        [Fact]
+        public void GetOneChildsListOfToyNames()
+        {
+            int childId = 5;
+            List<string> childToyList = _listHelper.GetChildsToys(childId);
             Assert.IsType<List<string>>(childToyList);
         }
     }
