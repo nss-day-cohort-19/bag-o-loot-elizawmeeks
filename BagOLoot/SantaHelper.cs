@@ -99,6 +99,40 @@ namespace BagOLoot
             return boo;
         }
 
+        public void ListChildrenOnConsole (Dictionary<int, string> childrenList)
+        {
+            int c = 0;
+            foreach (KeyValuePair<int, string> thing in childrenList)
+            {
+                c++;
+                Console.WriteLine($"{c}. {thing.Value}");
+            }
+        }
+
+        public int AcceptChosenChild(Dictionary<int, string> childrenList)
+        {
+            Console.Write ("> ");
+            int assignedChild;
+            Int32.TryParse (Console.ReadLine(), out assignedChild);
+            int x = 0;
+            foreach (KeyValuePair<int, string> thing in childrenList)
+            {
+                x++;
+                if (x == assignedChild)
+                {
+                    assignedChild = thing.Key;
+                }
+            }
+            return assignedChild;
+        }   
+
+        public int ListAndAcceptChildren(Dictionary<int, string> childrenList, SantaHelper Helper)
+        {
+            int assignedChild;
+            Helper.ListChildrenOnConsole(childrenList);
+            assignedChild = Helper.AcceptChosenChild(childrenList);
+            return assignedChild;
+        }     
 
     }
 }

@@ -19,6 +19,7 @@ namespace BagOLoot
         
         public Dictionary<int, string> GetChildren ()
         {
+            _children.Clear();
             // return new Dictionary<int, string>();
             using (_connection)
             {
