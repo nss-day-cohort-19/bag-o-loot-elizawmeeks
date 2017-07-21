@@ -7,12 +7,14 @@ namespace BagOLoot.MenuActions
   {
     public static void DoAction()
     {
+      // Add child to database
       Console.WriteLine ("Enter child name");
-                Console.Write ("> ");
-                string childName = Console.ReadLine();
-                ChildRegister registry = new ChildRegister();
-                bool childId = registry.AddChild(childName);
-                Console.WriteLine(childId);
+      Console.Write ("> ");
+        // Accepts user input
+      string childName = Console.ReadLine();
+        // Registers child to database
+      ChildRegister registry = new ChildRegister();
+      bool childId = registry.AddChild(childName);
     }
   }
 }

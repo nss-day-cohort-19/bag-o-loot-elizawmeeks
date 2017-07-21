@@ -24,6 +24,7 @@ namespace BagOLoot
             {
                 // Show Main Menu
                 choice = menu.ShowMainMenu();
+                // Run user's choices from the menu
                 switch (choice)
                 {
                     case 1:

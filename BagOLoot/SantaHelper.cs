@@ -99,8 +99,21 @@ namespace BagOLoot
             return boo;
         }
 
-        public void MatchIncrementToChildId(Dictionary<int, string> childrenList, int assignedChild)
+        public void ListChildrenOnConsole (Dictionary<int, string> childrenList)
         {
+            int c = 0;
+            foreach (KeyValuePair<int, string> thing in childrenList)
+            {
+                c++;
+                Console.WriteLine($"{c}. {thing.Value}");
+            }
+        }
+
+        public int AcceptChosenChild(Dictionary<int, string> childrenList)
+        {
+            Console.Write ("> ");
+            int assignedChild;
+            Int32.TryParse (Console.ReadLine(), out assignedChild);
             int x = 0;
             foreach (KeyValuePair<int, string> thing in childrenList)
             {
@@ -110,22 +123,16 @@ namespace BagOLoot
                     assignedChild = thing.Key;
                 }
             }
-        }
-
-        public int ListChildrenOnConsoleAndTakeResponse (Dictionary<int, string> childrenList)
-        {
-            int c = 0;
-            foreach (KeyValuePair<int, string> thing in childrenList)
-            {
-                c++;
-                Console.WriteLine($"{c}. {thing.Value}");
-            }
-            Console.Write ("> ");
-            int assignedChild;
-            Int32.TryParse (Console.ReadLine(), out assignedChild);
             return assignedChild;
-        }
-        
+        }   
+
+        public int ListAndAcceptChildren(Dictionary<int, string> childrenList, SantaHelper Helper)
+        {
+            int assignedChild;
+            Helper.ListChildrenOnConsole(childrenList);
+            assignedChild = Helper.AcceptChosenChild(childrenList);
+            return assignedChild;
+        }     
 
     }
 }
