@@ -19,6 +19,7 @@ namespace BagOLoot
             Console.WriteLine("3. Revoke toy from child");
             Console.WriteLine("4. Review child's toy list");
             Console.WriteLine("5. Child toy delivery complete");
+            Console.WriteLine("6. Yuletime Delivery Report");
 			Console.Write ("> ");
 
 			// Read in the user's choice
@@ -165,7 +166,25 @@ namespace BagOLoot
                         assignedChild = thing.Key;
                     }
                 }
-                
+                Helper.MarkAsDelivered(assignedChild);
+            }
+            if (choice == 6)
+            {
+                Console.WriteLine ("Yuletime Delivery Report");
+                Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%");
+                Dictionary<int, string> childrenList = listMaster.GetGoodChildren();
+                // KeyValuePair<int, string> number in numberTable
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    Console.WriteLine($"{thing.Value}");
+                    List<string> childToys = listMaster.GetChildsToys(thing.Key);
+                    foreach (string toy in childToys)
+                    {
+                        int c = 0;
+                        c++;
+                        Console.WriteLine($"{c}. {toy}");
+                    }
+                }
             }
         }
     }

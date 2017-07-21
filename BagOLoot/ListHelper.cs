@@ -46,6 +46,35 @@ namespace BagOLoot
             return _children;
         }
 
+        public Dictionary<int, string> GetGoodChildren ()
+        {
+            // return new Dictionary<int, string>();
+            using (_connection)
+            {
+                _connection.Open();
+                SqliteCommand dbcmd = _connection.CreateCommand();
+
+                // Select the id and name of every child
+                dbcmd.CommandText = $"select id, name from child where delivered=1";
+
+                using (SqliteDataReader dr = dbcmd.ExecuteReader())
+                {
+                    // read each row in the resultset
+                    while (dr.Read())
+                    {
+                        int result;
+                        Int32.TryParse(dr[0].ToString(), out result);
+                        _children.Add(result, dr[1].ToString()); //add child name to list
+                    }
+                }
+
+                // clean up
+                dbcmd.Dispose();
+                _connection.Close();
+            }
+            return _children;
+        }
+
         public List<string> GetChildsToys(int childId)
         {
             // Returns list of toy names for this child
