@@ -28,10 +28,19 @@ namespace BagOLoot.Tests
         [Fact]
         public void RemoveToyFromBagPerChild()
         {
-            int toyId = 15;
-            int childId = _helper.RemoveToyFromBag(toyId);
+            int toyId = 1;
+            int kidId = 4;
+            int childId = _helper.RemoveToyFromBag(toyId, kidId);
             List<int> toys = _listMaster.GetChildsToyIds(childId);
             Assert.DoesNotContain(toyId, toys);
+        }
+
+        [Fact]
+        public void MarkToysAsDelivered()
+        {
+            int childId = 3;
+            int boo = _helper.MarkAsDelivered(childId);
+            Assert.Equal(boo, 1);
         }
     }
 }

@@ -66,5 +66,39 @@ namespace BagOLoot
             }
             return childId;
         }
+        public int MarkAsDelivered(int childId)
+        {
+            // returns boolean
+            int boo = 0;
+            using (_connection)
+            {
+                _connection.Open ();
+                SqliteCommand dbcmd = _connection.CreateCommand ();
+
+                // Insert the new child
+                dbcmd.CommandText = $"UPDATE child SET delivered = 1 WHERE id = {childId}";
+                Console.WriteLine(dbcmd.CommandText);
+                dbcmd.ExecuteNonQuery ();
+
+                // Get the id of the new row
+                dbcmd.CommandText = $"select delivered from child where id={childId}";
+                using (SqliteDataReader dr = dbcmd.ExecuteReader()) 
+                {
+                    if (dr.Read()) {
+                        boo = dr.GetInt32(0);
+                    } else {
+                        throw new Exception("Unable to insert value");
+                    }
+                }
+
+                // clean up
+                dbcmd.Dispose ();
+                _connection.Close ();
+            }
+
+            return boo;
+        }
+
+
     }
 }

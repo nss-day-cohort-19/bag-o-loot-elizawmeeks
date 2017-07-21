@@ -18,6 +18,7 @@ namespace BagOLoot
             Console.WriteLine("2. Assign toy to a child");
             Console.WriteLine("3. Revoke toy from child");
             Console.WriteLine("4. Review child's toy list");
+            Console.WriteLine("5. Child toy delivery complete");
 			Console.Write ("> ");
 
 			// Read in the user's choice
@@ -141,6 +142,30 @@ namespace BagOLoot
                     e++;
                     Console.WriteLine($"{e}. {thing}");
                 }
+            }
+            if (choice == 5)
+            {
+                Console.WriteLine ("Which child had all of their toys delivered?");
+                Dictionary<int, string> childrenList = listMaster.GetChildren();
+                int c = 0;
+                // KeyValuePair<int, string> number in numberTable
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    c++;
+                    Console.WriteLine($"{c}. {thing.Value}");
+                }
+                Console.Write ("> ");
+                int assignedChild;
+                Int32.TryParse (Console.ReadLine(), out assignedChild);
+                foreach (KeyValuePair<int, string> thing in childrenList)
+                {
+                    c++;
+                    if (c == assignedChild)
+                    {
+                        assignedChild = thing.Key;
+                    }
+                }
+                
             }
         }
     }
